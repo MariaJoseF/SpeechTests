@@ -1,12 +1,239 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <stetic-interface>
-  <widget class="Gtk.Window" id="MainWindow" design-size="400 300">
+  <configuration>
+    <images-root-path>..</images-root-path>
+  </configuration>
+  <import>
+    <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <widget-library name="../bin/Debug/SpeechTest.exe" internal="true" />
+  </import>
+  <widget class="Gtk.Window" id="MainWindow" design-size="1175 637">
     <property name="MemberName" />
     <property name="Title" translatable="yes">MainWindow</property>
     <property name="WindowPosition">CenterOnParent</property>
     <signal name="DeleteEvent" handler="OnDeleteEvent" />
     <child>
-      <placeholder />
+      <widget class="Gtk.Fixed" id="fixed1">
+        <property name="MemberName" />
+        <property name="HasWindow">False</property>
+        <child>
+          <widget class="Gtk.Label" id="lblKey">
+            <property name="MemberName" />
+          </widget>
+          <packing>
+            <property name="X">281</property>
+            <property name="Y">41</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btSaveKey">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">Save Key</property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="SaveKey_Click" after="yes" />
+          </widget>
+          <packing>
+            <property name="X">882</property>
+            <property name="Y">46</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btDeleteKey">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">Delete Key</property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="DeleteKey_Click" after="yes" />
+          </widget>
+          <packing>
+            <property name="X">960</property>
+            <property name="Y">45</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="btGetKey">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">Get Key</property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="HelpButton_Click" after="yes" />
+          </widget>
+          <packing>
+            <property name="X">1048</property>
+            <property name="Y">49</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.RadioButton" id="_micRadioButton">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Use Microphone with ShortPhrase mode</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <property name="Group">group1</property>
+            <signal name="Clicked" handler="RadioButton_Click" after="yes" />
+          </widget>
+          <packing>
+            <property name="X">108</property>
+            <property name="Y">127</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.RadioButton" id="_micDictationRadioButton">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Use Microphone with LongDictation mode</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <property name="Group">group1</property>
+            <signal name="Clicked" handler="RadioButton_Click" after="yes" />
+          </widget>
+          <packing>
+            <property name="X">108</property>
+            <property name="Y">176</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.RadioButton" id="_micIntentRadioButton">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Use Microphone and intent detection</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <property name="Group">group1</property>
+            <signal name="Clicked" handler="RadioButton_Click" after="yes" />
+          </widget>
+          <packing>
+            <property name="X">120</property>
+            <property name="Y">216</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="lblLUIS">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">(* LUIS registration is needed.)</property>
+          </widget>
+          <packing>
+            <property name="X">191</property>
+            <property name="Y">252</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.RadioButton" id="_dataShortRadioButton">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Use wav file for ShortPhrase mode</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <property name="Group">group1</property>
+            <signal name="Clicked" handler="RadioButton_Click" after="yes" />
+          </widget>
+          <packing>
+            <property name="X">197</property>
+            <property name="Y">288</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.RadioButton" id="_dataLongRadioButton">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Use wav file for LongDictation mode</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <property name="Group">group1</property>
+            <signal name="Clicked" handler="RadioButton_Click" after="yes" />
+          </widget>
+          <packing>
+            <property name="X">207</property>
+            <property name="Y">321</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.RadioButton" id="_dataShortIntentRadioButton">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">Use wav file and intent detection</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+            <property name="Group">group1</property>
+            <signal name="Clicked" handler="RadioButton_Click" after="yes" />
+          </widget>
+          <packing>
+            <property name="X">216</property>
+            <property name="Y">356</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="lblSpeechSource">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">Speech Recognition Source:</property>
+          </widget>
+          <packing>
+            <property name="X">114</property>
+            <property name="Y">95</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="lblLUIS2">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">(* LUIS registration is needed.)</property>
+          </widget>
+          <packing>
+            <property name="X">211</property>
+            <property name="Y">395</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="_startButton">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Type">TextOnly</property>
+            <property name="Label" translatable="yes">Start _Recognition</property>
+            <property name="UseUnderline">True</property>
+            <signal name="Clicked" handler="StartButton_Click" after="yes" />
+          </widget>
+          <packing>
+            <property name="X">143</property>
+            <property name="Y">470</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder />
+        </child>
+        <child>
+          <placeholder />
+        </child>
+        <child>
+          <placeholder />
+        </child>
+        <child>
+          <placeholder />
+        </child>
+        <child>
+          <placeholder />
+        </child>
+        <child>
+          <widget class="Gtk.TextView" id="textview1">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Text" translatable="yes" />
+          </widget>
+          <packing>
+            <property name="X">801</property>
+            <property name="Y">34</property>
+          </packing>
+        </child>
+      </widget>
     </child>
   </widget>
 </stetic-interface>
