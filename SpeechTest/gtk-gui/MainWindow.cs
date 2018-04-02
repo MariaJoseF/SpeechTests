@@ -193,6 +193,7 @@ public partial class MainWindow
 		this.GtkScrolledWindow.ShadowType = ((global::Gtk.ShadowType)(1));
 		// Container child GtkScrolledWindow.Gtk.Container+ContainerChild
 		this._logText = new global::Gtk.TextView();
+		this._logText.Buffer.Text = global::Mono.Unix.Catalog.GetString("teste 123");
 		this._logText.CanFocus = true;
 		this._logText.Name = "_logText";
 		this.GtkScrolledWindow.Add(this._logText);

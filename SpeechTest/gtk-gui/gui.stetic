@@ -235,7 +235,7 @@
                 <property name="MemberName" />
                 <property name="CanFocus">True</property>
                 <property name="ShowScrollbars">True</property>
-                <property name="Text" translatable="yes" />
+                <property name="Text" translatable="yes">teste 123</property>
               </widget>
             </child>
           </widget>

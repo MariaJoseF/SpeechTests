@@ -331,6 +331,7 @@ public partial class MainWindow : Gtk.Window, INotifyPropertyChanged
     {
       
         //this._startButton.IsEnabled = false;
+        _startButton.Sensitive = false;
         //this._radioGroup.IsEnabled = false;
 
         this.LogRecognitionStart();
@@ -822,8 +823,35 @@ public partial class MainWindow : Gtk.Window, INotifyPropertyChanged
 
         Gtk.Application.Invoke(delegate {
             _logText.Buffer.Text += (formattedStr + "\n");
-            _logText.ScrollToEnd();
+            //_logText.ScrollToEnd();
+            ScrollToEnd(_logText);
+
         });
+    }
+
+    private void ScrollToEnd(TextView logText)
+    {
+        string txtBuffer = logText.Buffer.Text;
+
+        //end_iter = self.buffer.get_end_iter() 
+        //endmark = self.buffer.create_mark(None, end_iter) 
+        //self.move_mark_onscreen(endmark) 
+        //at_end = self.buffer.get_iter_at_mark(endmark).equal(end_iter) 
+        //self.buffer.insert(end_iter, text) 
+        //if at_end: 
+        //endmark = self.buffer.create_mark(None, end_iter) 
+        //self.scroll_mark_onscreen(endmark) 
+        TextIter end_iter = logText.Buffer.GetIterAtLine(logText.Buffer.LineCount - 1);
+        TextMark endmark = logText.Buffer.CreateMark(null, logText.Buffer.EndIter, false);
+        bool at_end = logText.Buffer.GetIterAtMark(endmark).Equal(logText.Buffer.EndIter);
+
+        logText.Buffer.Insert(end_iter, txtBuffer);
+          if (at_end)
+        {
+            //logText.Buffer.crea
+                   endmark = logText.Buffer.CreateMark(null, end_iter, false);
+            logText.ScrollMarkOnscreen(endmark);
+        }
     }
 
     /// <summary>
@@ -870,15 +898,26 @@ public partial class MainWindow : Gtk.Window, INotifyPropertyChanged
         try
         {
             SaveSubscriptionKeyToIsolatedStorage(this.SubscriptionKey);
-            MessageBox.Show("Subscription key is saved in your disk.\nYou do not need to paste the key next time.", "Subscription Key");
+            //MessageBox.Show("Subscription key is saved in your disk.\nYou do not need to paste the key next time.", "Subscription Key");
+            MessageDialog md = new MessageDialog(this, 
+        DialogFlags.DestroyWithParent, MessageType.Info, 
+        ButtonsType.Close, "Subscription key is saved in your disk.\nYou do not need to paste the key next time.", "Subscription Key");
+    md.Run();
+    md.Destroy();
         }
         catch (Exception exception)
         {
-            MessageBox.Show(
-                "Fail to save subscription key. Error message: " + exception.Message,
-                "Subscription Key",
-                MessageBoxButton.OK,
-                MessageBoxImage.Error);
+            //MessageBox.Show(
+                //"Fail to save subscription key. Error message: " + exception.Message,
+                //"Subscription Key",
+                //MessageBoxButton.OK,
+                //MessageBoxImage.Error);
+            MessageDialog md = new MessageDialog(this,
+                DialogFlags.DestroyWithParent, MessageType.Error,
+                ButtonsType.Ok, "Fail to save subscription key. Error message: " + exception.Message,
+                "Subscription Key");
+            md.Run();
+            md.Destroy();
         }
     }
 
@@ -893,15 +932,28 @@ public partial class MainWindow : Gtk.Window, INotifyPropertyChanged
         {
             this.SubscriptionKey = DefaultSubscriptionKeyPromptMessage;
             SaveSubscriptionKeyToIsolatedStorage(string.Empty);
-            MessageBox.Show("Subscription key is deleted from your disk.", "Subscription Key");
+            //MessageBox.Show("Subscription key is deleted from your disk.", "Subscription Key");
+            MessageDialog md = new MessageDialog(this,
+                DialogFlags.DestroyWithParent, MessageType.Info,
+                ButtonsType.Close, "Subscription key is deleted from your disk.", "Subscription Key");
+            md.Run();
+            md.Destroy();
+
         }
         catch (Exception exception)
         {
-            MessageBox.Show(
-                "Fail to delete subscription key. Error message: " + exception.Message,
-                "Subscription Key",
-                MessageBoxButton.OK,
-                MessageBoxImage.Error);
+            //MessageBox.Show(
+                //"Fail to delete subscription key. Error message: " + exception.Message,
+                //"Subscription Key",
+                //MessageBoxButton.OK,
+                //MessageBoxImage.Error);
+
+            MessageDialog md = new MessageDialog(this,
+                DialogFlags.DestroyWithParent, MessageType.Error,
+                ButtonsType.Ok, "Fail to delete subscription key. Error message: " + exception.Message,
+                "Subscription Key");
+            md.Run();
+            md.Destroy();
         }
     }
 
@@ -940,10 +992,13 @@ public partial class MainWindow : Gtk.Window, INotifyPropertyChanged
             this.dataClient = null;
         }
 
-        this._logText = string.Empty;
+        //this._logText.text = string.Empty;
+        this._logText.Buffer.Text = string.Empty;
         //this._startButton.IsEnable = true;
-        this._startButton.IsEnabled = true;
-        this._radioGroup.IsEnabled = true;
+        //this._startButton.IsEnabled = true;
+        this._startButton.Sensitive = true;
+        //this._radioGroup.IsEnabled = true;
     }
+
 
 }
