@@ -9,6 +9,8 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using Microsoft.CognitiveServices.SpeechRecognition;
+using System.Windows.Forms;
 
 public partial class MainWindow : Gtk.Window, INotifyPropertyChanged
 {
@@ -20,7 +22,7 @@ public partial class MainWindow : Gtk.Window, INotifyPropertyChanged
 
     protected void OnDeleteEvent(object sender, DeleteEventArgs a)
     {
-        Application.Quit();
+        Gtk.Application.Quit();
         a.RetVal = true;
     }
 
@@ -261,24 +263,27 @@ public partial class MainWindow : Gtk.Window, INotifyPropertyChanged
         }
     }
 
+    public DataRecognitionClient DataClient { get => dataClient; set => dataClient = value; }
+    public MicrophoneRecognitionClient MicClient { get => micClient; set => micClient = value; }
+
     /// <summary>
     /// Raises the System.Windows.Window.Closed event.
     /// </summary>
     /// <param name="e">An System.EventArgs that contains the event data.</param>
-    protected override void OnClosed(EventArgs e)
-    {
-        if (null != this.dataClient)
-        {
-            this.dataClient.Dispose();
-        }
+    /*   protected override void OnClosed(EventArgs e)
+	   {
+		   if (null != this.dataClient)
+		   {
+			   this.dataClient.Dispose();
+		   }
 
-        if (null != this.micClient)
-        {
-            this.micClient.Dispose();
-        }
+		   if (null != this.micClient)
+		   {
+			   this.micClient.Dispose();
+		   }
 
-        base.OnClosed(e);
-    }
+		   base.OnClosed(e);
+	   }*/
 
     /// <summary>
     /// Saves the subscription key to isolated storage.
@@ -311,7 +316,8 @@ public partial class MainWindow : Gtk.Window, INotifyPropertyChanged
         this.IsDataClientDictation = false;
 
         // Set the default choice for the group of checkbox.
-        this._micRadioButton.IsChecked = true;
+        //this._micRadioButton.IsChecked = true;
+        this._micRadioButton.Active = true;
 
         this.SubscriptionKey = this.GetSubscriptionKeyFromIsolatedStorage();
     }
@@ -321,10 +327,11 @@ public partial class MainWindow : Gtk.Window, INotifyPropertyChanged
     /// </summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
-    private void StartButton_Click(object sender, RoutedEventArgs e)
+    private void StartButton_Click(object sender, EventArgs e)
     {
-        this._startButton.IsEnabled = false;
-        this._radioGroup.IsEnabled = false;
+      
+        //this._startButton.IsEnabled = false;
+        //this._radioGroup.IsEnabled = false;
 
         this.LogRecognitionStart();
 
@@ -437,7 +444,7 @@ public partial class MainWindow : Gtk.Window, INotifyPropertyChanged
     /// </summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
-    private void HelpButton_Click(object sender, RoutedEventArgs e)
+    private void HelpButton_Click(object sender, EventArgs e)
     {
         Process.Start("https://www.projectoxford.ai/doc/general/subscription-key-mgmt");
     }
@@ -538,8 +545,24 @@ public partial class MainWindow : Gtk.Window, INotifyPropertyChanged
     /// <param name="e">The <see cref="SpeechResponseEventArgs"/> instance containing the event data.</param>
     private void OnMicShortPhraseResponseReceivedHandler(object sender, SpeechResponseEventArgs e)
     {
-        Dispatcher.Invoke((Action)(() =>
-        {
+        //Dispatcher.Invoke((Action)(() =>
+        //{
+        //    this.WriteLine("--- OnMicShortPhraseResponseReceivedHandler ---");
+
+        //    // we got the final result, so it we can end the mic reco.  No need to do this
+        //    // for dataReco, since we already called endAudio() on it as soon as we were done
+        //    // sending all the data.
+        //    this.micClient.EndMicAndRecognition();
+
+        //    this.WriteResponseResult(e);
+
+        //    _startButton.IsEnabled = true;
+        _startButton.Sensitive = true;
+        //    _radioGroup.IsEnabled = true;
+        //}));
+
+
+        Gtk.Application.Invoke(delegate {
             this.WriteLine("--- OnMicShortPhraseResponseReceivedHandler ---");
 
             // we got the final result, so it we can end the mic reco.  No need to do this
@@ -549,9 +572,10 @@ public partial class MainWindow : Gtk.Window, INotifyPropertyChanged
 
             this.WriteResponseResult(e);
 
-            _startButton.IsEnabled = true;
-            _radioGroup.IsEnabled = true;
-        }));
+            //_startButton.IsEnabled = true;
+            _startButton.Sensitive = true;
+           //_radioGroup.IsEnabled = true;
+        });
     }
 
     /// <summary>
@@ -561,8 +585,23 @@ public partial class MainWindow : Gtk.Window, INotifyPropertyChanged
     /// <param name="e">The <see cref="SpeechResponseEventArgs"/> instance containing the event data.</param>
     private void OnDataShortPhraseResponseReceivedHandler(object sender, SpeechResponseEventArgs e)
     {
-        Dispatcher.Invoke((Action)(() =>
-        {
+        //Dispatcher.Invoke((Action)(() =>
+        //{
+        //    this.WriteLine("--- OnDataShortPhraseResponseReceivedHandler ---");
+
+        //    // we got the final result, so it we can end the mic reco.  No need to do this
+        //    // for dataReco, since we already called endAudio() on it as soon as we were done
+        //    // sending all the data.
+        //    this.WriteResponseResult(e);
+
+        //    _startButton.IsEnabled = true;
+        _startButton.Sensitive = true;
+        //    _radioGroup.IsEnabled = true;
+        //}));
+
+
+
+        Gtk.Application.Invoke(delegate {
             this.WriteLine("--- OnDataShortPhraseResponseReceivedHandler ---");
 
             // we got the final result, so it we can end the mic reco.  No need to do this
@@ -570,9 +609,10 @@ public partial class MainWindow : Gtk.Window, INotifyPropertyChanged
             // sending all the data.
             this.WriteResponseResult(e);
 
-            _startButton.IsEnabled = true;
-            _radioGroup.IsEnabled = true;
-        }));
+            //_startButton.IsEnabled = true;
+            _startButton.Sensitive = true;
+            //_radioGroup.Active = true;
+        });
     }
 
     /// <summary>
@@ -612,17 +652,28 @@ public partial class MainWindow : Gtk.Window, INotifyPropertyChanged
         if (e.PhraseResponse.RecognitionStatus == RecognitionStatus.EndOfDictation ||
             e.PhraseResponse.RecognitionStatus == RecognitionStatus.DictationEndSilenceTimeout)
         {
-            Dispatcher.Invoke(
-                (Action)(() =>
-                {
-                        // we got the final result, so it we can end the mic reco.  No need to do this
-                        // for dataReco, since we already called endAudio() on it as soon as we were done
-                        // sending all the data.
-                        this.micClient.EndMicAndRecognition();
+            //Dispatcher.Invoke(
+                //(Action)(() =>
+                //{
+                //        // we got the final result, so it we can end the mic reco.  No need to do this
+                //        // for dataReco, since we already called endAudio() on it as soon as we were done
+                //        // sending all the data.
+                //        this.micClient.EndMicAndRecognition();
 
-                    this._startButton.IsEnabled = true;
-                    this._radioGroup.IsEnabled = true;
-                }));
+                //    this._startButton.IsEnabled = true;
+                //    this._radioGroup.IsEnabled = true;
+                //}));
+
+            Gtk.Application.Invoke(delegate {
+                // we got the final result, so it we can end the mic reco.  No need to do this
+                // for dataReco, since we already called endAudio() on it as soon as we were done
+                // sending all the data.
+                this.micClient.EndMicAndRecognition();
+
+                //this._startButton.IsEnabled = true;
+                _startButton.Sensitive = true;
+                //this._radioGroup.IsEnabled = true;
+            });
         }
 
         this.WriteResponseResult(e);
@@ -639,16 +690,27 @@ public partial class MainWindow : Gtk.Window, INotifyPropertyChanged
         if (e.PhraseResponse.RecognitionStatus == RecognitionStatus.EndOfDictation ||
             e.PhraseResponse.RecognitionStatus == RecognitionStatus.DictationEndSilenceTimeout)
         {
-            Dispatcher.Invoke(
-                (Action)(() =>
-                {
-                    _startButton.IsEnabled = true;
-                    _radioGroup.IsEnabled = true;
+            //Dispatcher.Invoke(
+                //(Action)(() =>
+                //{
+                    //_startButton.IsEnabled = true;
+                    //_radioGroup.IsEnabled = true;
+
+                    //    // we got the final result, so it we can end the mic reco.  No need to do this
+                    //    // for dataReco, since we already called endAudio() on it as soon as we were done
+                    //    // sending all the data.
+                    //}));
+
+            Gtk.Application.Invoke(delegate {
+                //_startButton.IsEnabled = true;
+                _startButton.Sensitive = true;
+                //_radioGroup.IsEnabled = true;
 
                         // we got the final result, so it we can end the mic reco.  No need to do this
                         // for dataReco, since we already called endAudio() on it as soon as we were done
                         // sending all the data.
-                    }));
+
+            });
         }
 
         this.WriteResponseResult(e);
@@ -685,10 +747,17 @@ public partial class MainWindow : Gtk.Window, INotifyPropertyChanged
     /// <param name="e">The <see cref="SpeechErrorEventArgs"/> instance containing the event data.</param>
     private void OnConversationErrorHandler(object sender, SpeechErrorEventArgs e)
     {
-        Dispatcher.Invoke(() =>
-        {
-            _startButton.IsEnabled = true;
-            _radioGroup.IsEnabled = true;
+        //Dispatcher.Invoke(() =>
+        //{
+        //    //_startButton.IsEnabled = true;
+        //    _startButton.Sensitive = true;
+        //    //_radioGroup.IsEnabled = true;
+        //});
+
+        Gtk.Application.Invoke(delegate {
+            //_startButton.IsEnabled = true;
+            _startButton.Sensitive = true;
+            //_radioGroup.IsEnabled = true;
         });
 
         this.WriteLine("--- Error received by OnConversationErrorHandler() ---");
@@ -704,8 +773,19 @@ public partial class MainWindow : Gtk.Window, INotifyPropertyChanged
     /// <param name="e">The <see cref="MicrophoneEventArgs"/> instance containing the event data.</param>
     private void OnMicrophoneStatus(object sender, MicrophoneEventArgs e)
     {
-        Dispatcher.Invoke(() =>
-        {
+        //Dispatcher.Invoke(() =>
+        //{
+        //    WriteLine("--- Microphone status change received by OnMicrophoneStatus() ---");
+        //    WriteLine("********* Microphone status: {0} *********", e.Recording);
+        //    if (e.Recording)
+        //    {
+        //        WriteLine("Please start speaking.");
+        //    }
+
+        //    WriteLine();
+        //});
+
+        Gtk.Application.Invoke(delegate {
             WriteLine("--- Microphone status change received by OnMicrophoneStatus() ---");
             WriteLine("********* Microphone status: {0} *********", e.Recording);
             if (e.Recording)
@@ -730,13 +810,18 @@ public partial class MainWindow : Gtk.Window, INotifyPropertyChanged
     /// </summary>
     /// <param name="format">The format.</param>
     /// <param name="args">The arguments.</param>
-    private void WriteLine(string format, params object[] args)
+    public void WriteLine(string format, params object[] args)
     {
         var formattedStr = string.Format(format, args);
         Trace.WriteLine(formattedStr);
-        Dispatcher.Invoke(() =>
-        {
-            _logText.Text += (formattedStr + "\n");
+        //Dispatcher.Invoke(() =>
+        //{
+        //    _logText.Text += (formattedStr + "\n");
+        //    _logText.ScrollToEnd();
+        //});
+
+        Gtk.Application.Invoke(delegate {
+            _logText.Buffer.Text += (formattedStr + "\n");
             _logText.ScrollToEnd();
         });
     }
@@ -780,7 +865,7 @@ public partial class MainWindow : Gtk.Window, INotifyPropertyChanged
     /// </summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
-    private void SaveKey_Click(object sender, RoutedEventArgs e)
+    private void SaveKey_Click(object sender, EventArgs e)
     {
         try
         {
@@ -802,7 +887,7 @@ public partial class MainWindow : Gtk.Window, INotifyPropertyChanged
     /// </summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
-    private void DeleteKey_Click(object sender, RoutedEventArgs e)
+    private void DeleteKey_Click(object sender, EventArgs e)
     {
         try
         {
@@ -839,7 +924,7 @@ public partial class MainWindow : Gtk.Window, INotifyPropertyChanged
     /// </summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
-    private void RadioButton_Click(object sender, RoutedEventArgs e)
+    private void RadioButton_Click(object sender, EventArgs e)
     {
         // Reset everything
         if (this.micClient != null)
@@ -855,7 +940,8 @@ public partial class MainWindow : Gtk.Window, INotifyPropertyChanged
             this.dataClient = null;
         }
 
-        this._logText.Text = string.Empty;
+        this._logText = string.Empty;
+        //this._startButton.IsEnable = true;
         this._startButton.IsEnabled = true;
         this._radioGroup.IsEnabled = true;
     }

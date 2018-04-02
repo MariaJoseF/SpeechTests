@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Bond.CSharp.4.2.1\build\Bond.CSharp.props" Condition="Exists('..\packages\Bond.CSharp.4.2.1\build\Bond.CSharp.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -50,6 +51,36 @@
     <Reference Include="SpeechClient">
       <HintPath>..\packages\Microsoft.ProjectOxford.SpeechRecognition-x86.1.0.0.7\lib\SpeechClient.dll</HintPath>
     </Reference>
+    <Reference Include="Bond.Attributes">
+      <HintPath>..\packages\Bond.Core.CSharp.4.2.1\lib\net45\Bond.Attributes.dll</HintPath>
+    </Reference>
+    <Reference Include="Bond">
+      <HintPath>..\packages\Bond.Core.CSharp.4.2.1\lib\net45\Bond.dll</HintPath>
+    </Reference>
+    <Reference Include="Bond.IO">
+      <HintPath>..\packages\Bond.Core.CSharp.4.2.1\lib\net45\Bond.IO.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Validation">
+      <HintPath>..\packages\Microsoft.VisualStudio.Validation.14.1.111\lib\net45\Microsoft.VisualStudio.Validation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Threading">
+      <HintPath>..\packages\Microsoft.VisualStudio.Threading.14.1.131\lib\net45\Microsoft.VisualStudio.Threading.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Bond.JSON">
+      <HintPath>..\packages\Bond.Runtime.CSharp.4.2.1\lib\net45\Bond.JSON.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bing.Messaging">
+      <HintPath>..\packages\Microsoft.Bing.Speech.2.0.2\lib\net45\Microsoft.Bing.Messaging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bing.Speech">
+      <HintPath>..\packages\Microsoft.Bing.Speech.2.0.2\lib\net45\Microsoft.Bing.Speech.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows" />
+    <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="gtk-gui\gui.stetic">
@@ -67,4 +98,5 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Bond.CSharp.4.2.1\build\Bond.CSharp.targets" Condition="Exists('..\packages\Bond.CSharp.4.2.1\build\Bond.CSharp.targets')" />
 </Project>

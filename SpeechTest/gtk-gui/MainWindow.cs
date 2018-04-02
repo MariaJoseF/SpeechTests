@@ -33,6 +33,10 @@ public partial class MainWindow
 
 	private global::Gtk.Button _startButton;
 
+	private global::Gtk.ScrolledWindow GtkScrolledWindow;
+
+	private global::Gtk.TextView _logText;
+
 	private global::Gtk.TextView textview1;
 
 	protected virtual void Build()
@@ -184,31 +188,37 @@ public partial class MainWindow
 		w14.X = 143;
 		w14.Y = 470;
 		// Container child fixed1.Gtk.Fixed+FixedChild
+		this.GtkScrolledWindow = new global::Gtk.ScrolledWindow();
+		this.GtkScrolledWindow.Name = "GtkScrolledWindow";
+		this.GtkScrolledWindow.ShadowType = ((global::Gtk.ShadowType)(1));
+		// Container child GtkScrolledWindow.Gtk.Container+ContainerChild
+		this._logText = new global::Gtk.TextView();
+		this._logText.CanFocus = true;
+		this._logText.Name = "_logText";
+		this.GtkScrolledWindow.Add(this._logText);
+		this.fixed1.Add(this.GtkScrolledWindow);
+		global::Gtk.Fixed.FixedChild w16 = ((global::Gtk.Fixed.FixedChild)(this.fixed1[this.GtkScrolledWindow]));
+		w16.X = 922;
+		w16.Y = 124;
+		// Container child fixed1.Gtk.Fixed+FixedChild
 		this.textview1 = new global::Gtk.TextView();
+		this.textview1.Buffer.Text = global::Mono.Unix.Catalog.GetString("{Binding ElementName=_mainWindow, Path=SubscriptionKey, Mode=TwoWay}");
 		this.textview1.CanFocus = true;
 		this.textview1.Name = "textview1";
 		this.fixed1.Add(this.textview1);
-		global::Gtk.Fixed.FixedChild w15 = ((global::Gtk.Fixed.FixedChild)(this.fixed1[this.textview1]));
-		w15.X = 801;
-		w15.Y = 34;
+		global::Gtk.Fixed.FixedChild w17 = ((global::Gtk.Fixed.FixedChild)(this.fixed1[this.textview1]));
+		w17.X = 421;
+		w17.Y = 55;
 		this.Add(this.fixed1);
 		if ((this.Child != null))
 		{
 			this.Child.ShowAll();
 		}
-		this.DefaultWidth = 1175;
+		this.DefaultWidth = 1249;
 		this.DefaultHeight = 637;
 		this.Show();
 		this.DeleteEvent += new global::Gtk.DeleteEventHandler(this.OnDeleteEvent);
-		this.btSaveKey.Clicked += new global::System.EventHandler(this.SaveKey_Click);
-		this.btDeleteKey.Clicked += new global::System.EventHandler(this.DeleteKey_Click);
 		this.btGetKey.Clicked += new global::System.EventHandler(this.HelpButton_Click);
-		this._micRadioButton.Clicked += new global::System.EventHandler(this.RadioButton_Click);
-		this._micDictationRadioButton.Clicked += new global::System.EventHandler(this.RadioButton_Click);
-		this._micIntentRadioButton.Clicked += new global::System.EventHandler(this.RadioButton_Click);
-		this._dataShortRadioButton.Clicked += new global::System.EventHandler(this.RadioButton_Click);
-		this._dataLongRadioButton.Clicked += new global::System.EventHandler(this.RadioButton_Click);
-		this._dataShortIntentRadioButton.Clicked += new global::System.EventHandler(this.RadioButton_Click);
 		this._startButton.Clicked += new global::System.EventHandler(this.StartButton_Click);
 	}
 }
