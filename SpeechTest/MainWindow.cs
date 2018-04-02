@@ -3,14 +3,12 @@ using Gtk;
 
 
 using System.ComponentModel;
-using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Runtime.CompilerServices;
-using System.Windows;
 using Microsoft.CognitiveServices.SpeechRecognition;
-using System.Windows.Forms;
+
 
 public partial class MainWindow : Gtk.Window, INotifyPropertyChanged
 {
@@ -156,7 +154,7 @@ public partial class MainWindow : Gtk.Window, INotifyPropertyChanged
     /// </value>
     private string LuisEndpointUrl
     {
-        get { return ConfigurationManager.AppSettings["LuisEndpointUrl"]; }
+        get { return System.Configuration.ConfigurationManager.AppSettings["LuisEndpointUrl"]; }
     }
 
     /// <summary>
@@ -231,7 +229,7 @@ public partial class MainWindow : Gtk.Window, INotifyPropertyChanged
     {
         get
         {
-            return ConfigurationManager.AppSettings["ShortWaveFile"];
+            return System.Configuration.ConfigurationManager.AppSettings["ShortWaveFile"];
         }
     }
 
@@ -245,7 +243,7 @@ public partial class MainWindow : Gtk.Window, INotifyPropertyChanged
     {
         get
         {
-            return ConfigurationManager.AppSettings["LongWaveFile"];
+            return System.Configuration.ConfigurationManager.AppSettings["LongWaveFile"];
         }
     }
 
@@ -259,7 +257,7 @@ public partial class MainWindow : Gtk.Window, INotifyPropertyChanged
     {
         get
         {
-            return ConfigurationManager.AppSettings["AuthenticationUri"];
+            return System.Configuration.ConfigurationManager.AppSettings["AuthenticationUri"];
         }
     }
 
